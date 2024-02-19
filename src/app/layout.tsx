@@ -1,10 +1,13 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+import { Roboto_Condensed } from "next/font/google";
 import "./globals.css";
 import Providers from "@/lib/Providers";
 import { AntdRegistry } from "@ant-design/nextjs-registry";
 
-const inter = Inter({ subsets: ["latin"] });
+const roboto_condensed = Roboto_Condensed({
+  subsets: ["cyrillic"],
+  weight: ["300", "400", "500", "700", "800"],
+});
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -19,7 +22,7 @@ export default function RootLayout({
   return (
     <Providers>
       <html lang="en">
-        <body className={inter.className}>
+        <body className={roboto_condensed.className}>
           <AntdRegistry>{children}</AntdRegistry>
         </body>
       </html>
