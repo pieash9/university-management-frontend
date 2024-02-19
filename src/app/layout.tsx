@@ -22,7 +22,10 @@ export default function RootLayout({
   return (
     <Providers>
       <html lang="en">
-        <body className={roboto_condensed.className}>
+        <body
+          suppressHydrationWarning={true}
+          className={roboto_condensed.className}
+        >
           <AntdRegistry>{children}</AntdRegistry>
         </body>
       </html>
