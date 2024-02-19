@@ -6,6 +6,8 @@ import Image from "next/image";
 import Form from "@/components/Forms/Forms";
 import FormInput from "@/components/Forms/FormInput";
 import { SubmitHandler } from "react-hook-form";
+import { useUserLoginMutation } from "@/redux/api/authApi";
+import { storeUserInfo } from "@/services/auth.service";
 
 type FormValues = {
   id: string;
@@ -13,10 +15,15 @@ type FormValues = {
 };
 
 const LoginPage = () => {
-  const onsubmit: SubmitHandler<FormValues> = (data) => {
+  const [userLogin] = useUserLoginMutation();
+
+  const onsubmit: SubmitHandler<FormValues> = async (data: any) => {
     try {
-      console.log(data);
-    } catch (error) {}
+      const res = await userLogin({ ...data }).unwrap();
+      storeUserInfo({ accessToken: res?.data.accessToken });
+    } catch (error) {
+      console.error(error);
+    }
   };
   return (
     <Row justify="center" align="middle" style={{ minHeight: "100vh" }}>
