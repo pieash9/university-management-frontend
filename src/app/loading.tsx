@@ -1,9 +1,7 @@
+import LoadingFullScreen from "@/components/ui/Loading";
+
 const loading = () => {
-  return (
-    <div>
-      <h1>Loading...</h1>
-    </div>
-  );
+  return <LoadingFullScreen />;
 };
 
 export default loading;

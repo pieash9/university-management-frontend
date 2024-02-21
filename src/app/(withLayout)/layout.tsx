@@ -1,6 +1,7 @@
 "use client";
 
 import Contents from "@/components/ui/Contents";
+import LoadingFullScreen from "@/components/ui/Loading";
 import SideBar from "@/components/ui/SideBar";
 import { isLoggedIn } from "@/services/auth.service";
 import { Layout } from "antd";
@@ -20,7 +21,7 @@ const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
   }, [router, isLoading]);
 
   if (!isLoading) {
-    return <p>Loading...</p>;
+    return <LoadingFullScreen />;
   }
   return (
     <Layout hasSider>
