@@ -35,7 +35,8 @@ const SideBar = () => {
           fontSize: "2rem",
           textAlign: "center",
           fontWeight: "bold",
-          marginBottom: "1rem",
+          marginBottom: "0.5rem",
+          padding: "10px 0",
         }}
       >
         UMS

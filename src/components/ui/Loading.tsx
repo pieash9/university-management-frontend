@@ -1,11 +1,19 @@
-import { Spin } from "antd";
+import { Row, Space, Spin } from "antd";
 
-const LoadingFullScreen = () => {
+const Loading = () => {
   return (
-    <div>
-      <Spin size="large" spinning fullscreen />
-    </div>
+    <Row
+      justify="center"
+      align="middle"
+      style={{
+        height: "100vh",
+      }}
+    >
+      <Space>
+        <Spin tip="Loading" size="large"></Spin>
+      </Space>
+    </Row>
   );
 };
 
-export default LoadingFullScreen;
+export default Loading;
