@@ -1,7 +1,10 @@
 "use client";
 
+import ActionBar from "@/components/ui/ActionBar";
 import UMBreadCrumb from "@/components/ui/UMBreadCrumb";
 import { getUserInfo } from "@/services/auth.service";
+import { Button } from "antd";
+import Link from "next/link";
 
 const ManageFacultyPage = () => {
   const { role } = getUserInfo() as any;
@@ -19,7 +22,11 @@ const ManageFacultyPage = () => {
           },
         ]}
       />
-      ManageFacultyPage
+      <ActionBar title="Faculty List">
+        <Link href="/super_admin/manage-faculty/create">
+          <Button type="primary">Create</Button>
+        </Link>
+      </ActionBar>
     </div>
   );
 };

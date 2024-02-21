@@ -1,6 +1,6 @@
 import UMBreadCrumb from "@/components/ui/UMBreadCrumb";
 
-const SuperAdmin = () => {
+const CreateFacultyPage = () => {
   return (
     <div>
       <UMBreadCrumb
@@ -9,11 +9,15 @@ const SuperAdmin = () => {
             label: "super_admin",
             link: "/super_admin",
           },
+          {
+            label: "faculty",
+            link: "/super_admin/faculty",
+          },
         ]}
       />
-      <h1>SuperAdmin</h1>
+      <h1>Create Admin</h1>
     </div>
   );
 };
 
-export default SuperAdmin;
+export default CreateFacultyPage;
