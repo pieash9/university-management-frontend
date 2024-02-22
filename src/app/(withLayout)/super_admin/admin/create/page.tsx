@@ -1,11 +1,19 @@
 "use client";
 
+import FormDatePicker from "@/components/Forms/FormDatePicker";
 import FormInput from "@/components/Forms/FormInput";
 import FormSelectField from "@/components/Forms/FormSelectField";
+import FormTextArea from "@/components/Forms/FormTextArea";
 import Form from "@/components/Forms/Forms";
 import UMBreadCrumb from "@/components/ui/UMBreadCrumb";
 import UploadImage from "@/components/ui/UploadImage";
-import { departmentOptions, genderOptions } from "@/constants/global";
+import {
+  bloodGroupOptions,
+  departmentOptions,
+  genderOptions,
+} from "@/constants/global";
+import { adminSchema } from "@/schemas/admin";
+import { yupResolver } from "@hookform/resolvers/yup";
 import { Button, Col, Row } from "antd";
 
 import { SubmitHandler } from "react-hook-form";
@@ -34,7 +42,7 @@ const CreateAdminPage = () => {
       />
       <h1>Create Admin</h1>
       <div className="">
-        <Form submitHandler={onsubmit}>
+        <Form submitHandler={onsubmit} resolver={yupResolver(adminSchema)}>
           <div
             style={{
               border: "1px solid #d9d9d9",
@@ -56,7 +64,7 @@ const CreateAdminPage = () => {
                   type="text"
                   name="admin.name.firstName"
                   size="large"
-                  label="First Name"
+                  label="First name"
                 />
               </Col>
               <Col
@@ -68,7 +76,7 @@ const CreateAdminPage = () => {
                   type="text"
                   name="admin.name.middleName"
                   size="large"
-                  label="Middle Name"
+                  label="Middle name"
                 />
               </Col>
               <Col
@@ -80,7 +88,7 @@ const CreateAdminPage = () => {
                   type="text"
                   name="admin.name.lastName"
                   size="large"
-                  label="Last Name"
+                  label="Last name"
                 />
               </Col>
               <Col
@@ -105,7 +113,7 @@ const CreateAdminPage = () => {
                   name="admin.gender"
                   size="large"
                   label="Gender"
-                  placeholder="Select a Gender"
+                  placeholder="Select a gender"
                   options={genderOptions}
                 />
               </Col>
@@ -119,7 +127,7 @@ const CreateAdminPage = () => {
                   name="admin.managementDepartment"
                   size="large"
                   label="Department"
-                  placeholder="Select a Department"
+                  placeholder="Select a department"
                   options={departmentOptions}
                 />
               </Col>
@@ -167,7 +175,7 @@ const CreateAdminPage = () => {
                   type="text"
                   name="admin.contactNo"
                   size="large"
-                  label="Contact Number"
+                  label="Contact number"
                 />
               </Col>
               <Col
@@ -179,9 +187,34 @@ const CreateAdminPage = () => {
                   type="text"
                   name="admin.emergencyContactNo"
                   size="large"
-                  label="Emergency Contact No"
+                  label="Emergency contact no"
                 />
               </Col>
+              <Col
+                className="gutter-row"
+                span={8}
+                style={{ marginBottom: "10px" }}
+              >
+                <FormDatePicker
+                  name="admin.dateOfBirth"
+                  size="large"
+                  label="Date of birth"
+                />
+              </Col>
+              <Col
+                className="gutter-row"
+                span={8}
+                style={{ marginBottom: "10px" }}
+              >
+                <FormSelectField
+                  name="admin.bloodGroup"
+                  size="large"
+                  label="Blood group"
+                  placeholder="Select a blood group"
+                  options={bloodGroupOptions}
+                />
+              </Col>
+
               <Col
                 className="gutter-row"
                 span={8}
@@ -189,37 +222,25 @@ const CreateAdminPage = () => {
               >
                 <FormInput
                   type="text"
-                  name="dateOfBirth"
+                  name="admin.designation"
                   size="large"
-                  label="Date Of Birth"
+                  label="Designation"
                 />
               </Col>
 
-              <Col
-                className="gutter-row"
-                span={8}
-                style={{ marginBottom: "10px" }}
-              >
-                <FormSelectField
-                  name="bloodGroup"
-                  size="large"
-                  label="Gender"
-                  placeholder="Select a Gender"
-                  options={genderOptions}
+              <Col span={12} style={{ margin: "10px 0" }}>
+                <FormTextArea
+                  name="admin.presentAddress"
+                  label="Present address"
+                  rows={4}
                 />
               </Col>
 
-              <Col
-                className="gutter-row"
-                span={8}
-                style={{ marginBottom: "10px" }}
-              >
-                <FormSelectField
-                  name="admin.managementDepartment"
-                  size="large"
-                  label="Department"
-                  placeholder="Select a Department"
-                  options={departmentOptions}
+              <Col span={12} style={{ margin: "10px 0" }}>
+                <FormTextArea
+                  name="admin.permanentAddress"
+                  label="Permanent address"
+                  rows={4}
                 />
               </Col>
             </Row>

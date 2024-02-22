@@ -1,6 +1,6 @@
 "use client";
 
-import { Button, Col, Row } from "antd";
+import { Button, Col, Row, message } from "antd";
 import loginImage from "@/assets/login-image.png";
 import Image from "next/image";
 import Form from "@/components/Forms/Forms";
@@ -25,6 +25,7 @@ const Login = () => {
 
       if (res?.accessToken) {
         router.push("/profile");
+        message.success("User logged in successful");
       }
       storeUserInfo({ accessToken: res?.accessToken });
     } catch (error) {
