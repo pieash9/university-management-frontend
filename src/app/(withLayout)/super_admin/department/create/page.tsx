@@ -9,7 +9,7 @@ import { Button, Col, Row, message } from "antd";
 const CreateDepartmentPage = () => {
   const [addDepartment] = useAddDepartmentMutation();
   const onSubmit = async (data: any) => {
-    message.loading("Creating...", 2);
+    message.loading("Creating...");
     try {
       await addDepartment(data);
       message.success("Department added successfully");
