@@ -17,6 +17,7 @@ import {
 import ActionBar from "@/components/ui/ActionBar";
 import { useDebounced } from "@/redux/hooks";
 import dayjs from "dayjs";
+import UMModal from "@/components/ui/UMModal";
 
 const ManageDepartmentPage = () => {
   const [size, setSize] = useState<number>(10);
@@ -24,6 +25,7 @@ const ManageDepartmentPage = () => {
   const [sortBy, setSortBy] = useState<string>("");
   const [sortOrder, setSortOrder] = useState<string>("");
   const [searchTerm, setSearchTerm] = useState<string>("");
+  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
 
   const [deleteDepartment] = useDeleteDepartmentMutation();
 
@@ -49,16 +51,23 @@ const ManageDepartmentPage = () => {
   const departments = data?.departments;
   const meta = data?.meta;
 
+  const handleModalOpen = () => {
+    setIsModalOpen(true);
+  };
+
   const deleteHandler = async (id: string) => {
     message.loading("Deleting...");
     try {
       await deleteDepartment(id);
       message.success("Department Deleted");
+      setIsModalOpen(false);
     } catch (err: any) {
       console.error(err.message);
       message.error(err.message);
+      setIsModalOpen(false);
     }
   };
+
   const columns = [
     {
       title: "Title",
@@ -84,9 +93,17 @@ const ManageDepartmentPage = () => {
               <EditOutlined />
             </Button>
           </Link>
-          <Button onClick={() => deleteHandler(data?.id)} type="primary" danger>
+          <Button onClick={handleModalOpen} type="primary" danger>
             <DeleteOutlined />
           </Button>
+          <UMModal
+            isModalOpen={isModalOpen}
+            setIsModalOpen={setIsModalOpen}
+            title={`Are you sure want to delete
+              ${data?.title}
+             department ?`}
+            handleOk={() => deleteHandler(data?.id)}
+          />
         </>
       ),
     },

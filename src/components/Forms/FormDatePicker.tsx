@@ -27,13 +27,12 @@ const FormDatePicker = ({
   return (
     <div>
       {label ? <p style={{ marginBottom: "4px" }}>{label}</p> : null}
-      <br />
       <Controller
         name={name}
         control={control}
         render={({ field }) => (
           <DatePicker
-            value={dayjs(field.value) || ""}
+            defaultValue={dayjs(field.value) || ""}
             size={size}
             onChange={handleOnChange}
             style={{ width: "100%" }}
