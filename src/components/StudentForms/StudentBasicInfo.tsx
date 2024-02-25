@@ -1,12 +1,9 @@
-"use client";
-
 import { Col, Row } from "antd";
 import FormInput from "../Forms/FormInput";
-
+import FormDatePicker from "../Forms/FormDatePicker";
 import FormSelectField from "../Forms/FormSelectField";
 import FormTextArea from "../Forms/FormTextArea";
 import { bloodGroupOptions } from "@/constants/global";
-import FormDatePicker from "../Forms/FormDatePicker";
 
 const StudentBasicInfo = () => {
   return (

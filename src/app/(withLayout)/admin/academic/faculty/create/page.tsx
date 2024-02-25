@@ -4,16 +4,19 @@ import Form from "@/components/Forms/Form";
 import FormInput from "@/components/Forms/FormInput";
 import UMBreadCrumb from "@/components/ui/UMBreadCrumb";
 import { useAddAcademicFacultyMutation } from "@/redux/api/academic/facultyApi";
+
 import { Button, Col, Row, message } from "antd";
 
 const CreateACFacultyPage = () => {
-  const [addFaculty] = useAddAcademicFacultyMutation();
+  const [addAcademicFaculty] = useAddAcademicFacultyMutation();
+
   const onSubmit = async (data: any) => {
-    message.loading("Creating...");
+    message.loading("Creating.....");
     try {
-      const res = await addFaculty(data);
+      console.log(data);
+      const res = await addAcademicFaculty(data);
       if (!!res) {
-        message.success("Academic Faculty added successfully");
+        message.success("Academic Faculty Created Successfully");
       }
     } catch (err: any) {
       console.error(err.message);
@@ -25,7 +28,7 @@ const CreateACFacultyPage = () => {
     <div>
       <UMBreadCrumb
         items={[
-          { label: base, link: `/${base}` },
+          { label: `${base}`, link: `/${base}` },
           { label: "academic-faculty", link: `/${base}/academic/faculty` },
         ]}
       />

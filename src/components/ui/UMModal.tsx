@@ -1,33 +1,35 @@
-"use client";
-
-import React, { ReactElement, ReactNode } from "react";
 import { Modal } from "antd";
+import { ReactElement, ReactNode } from "react";
 
-type ModalProps = {
-  title?: string;
-  isModalOpen: boolean;
-  setIsModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
-  handleOk?: any;
-  children?: ReactElement | ReactNode;
-};
+interface IModal {
+  isOpen: boolean;
+  closeModal: () => void;
+  title: string | ReactNode;
+  children: ReactElement;
+  handleOk?: () => void;
+  showCancelButton?: boolean;
+  showOkButton?: boolean;
+}
 
 const UMModal = ({
+  isOpen,
+  closeModal,
   title,
-  isModalOpen,
-  setIsModalOpen,
-  handleOk,
   children,
-}: ModalProps) => {
-  const handleCancel = () => {
-    setIsModalOpen(false);
-  };
-
+  handleOk,
+  showCancelButton = true,
+  showOkButton = true,
+}: IModal) => {
   return (
     <Modal
       title={title}
-      open={isModalOpen}
+      open={isOpen}
       onOk={handleOk}
-      onCancel={handleCancel}
+      onCancel={closeModal}
+      cancelButtonProps={{
+        style: { display: showCancelButton ? "inline" : "none" },
+      }}
+      okButtonProps={{ style: { display: showOkButton ? "inline" : "none" } }}
     >
       {children}
     </Modal>

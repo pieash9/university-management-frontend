@@ -1,9 +1,9 @@
 "use client";
 
-import { getErrorMessageByPropertyName } from "@/utils/schemaValidator";
+import { getErrorMessageByPropertyName } from "@/utils/schema-validator";
 import { Input } from "antd";
-import { Controller, useFormContext } from "react-hook-form";
-
+import { spawn } from "child_process";
+import { useFormContext, Controller } from "react-hook-form";
 interface IInput {
   name: string;
   type?: string;
@@ -13,45 +13,58 @@ interface IInput {
   placeholder?: string;
   validation?: object;
   label?: string;
+  required?: boolean;
 }
 
 const FormInput = ({
   name,
   type,
-  size,
+  size = "large",
   value,
   id,
   placeholder,
   validation,
   label,
+  required,
 }: IInput) => {
   const {
     control,
     formState: { errors },
   } = useFormContext();
+
   const errorMessage = getErrorMessageByPropertyName(errors, name);
+
   return (
     <>
-      {label ? <p style={{ marginBottom: "4px" }}>{label}</p> : null}
+      {required ? (
+        <span
+          style={{
+            color: "red",
+          }}
+        >
+          *
+        </span>
+      ) : null}
+      {label ? label : null}
       <Controller
         control={control}
         name={name}
         render={({ field }) =>
-          type !== "password" ? (
-            <Input
-              {...field}
+          type === "password" ? (
+            <Input.Password
               type={type}
               size={size}
-              value={value ? value : field.value}
               placeholder={placeholder}
+              {...field}
+              value={value ? value : field.value}
             />
           ) : (
-            <Input.Password
-              {...field}
+            <Input
               type={type}
               size={size}
-              value={value ? value : field.value}
               placeholder={placeholder}
+              {...field}
+              value={value ? value : field.value}
             />
           )
         }

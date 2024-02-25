@@ -1,5 +1,10 @@
 "use client";
-
+import {
+  DeleteOutlined,
+  EditOutlined,
+  EyeOutlined,
+  ReloadOutlined,
+} from "@ant-design/icons";
 import UMBreadCrumb from "@/components/ui/UMBreadCrumb";
 import UMTable from "@/components/ui/UMTable";
 import {
@@ -9,27 +14,19 @@ import {
 import { Button, Input, message } from "antd";
 import Link from "next/link";
 import { useState } from "react";
-import {
-  DeleteOutlined,
-  EditOutlined,
-  ReloadOutlined,
-} from "@ant-design/icons";
 import ActionBar from "@/components/ui/ActionBar";
 import { useDebounced } from "@/redux/hooks";
 import dayjs from "dayjs";
-import UMModal from "@/components/ui/UMModal";
 
 const ManageDepartmentPage = () => {
-  const [size, setSize] = useState<number>(10);
+  const query: Record<string, any> = {};
+
   const [page, setPage] = useState<number>(1);
+  const [size, setSize] = useState<number>(10);
   const [sortBy, setSortBy] = useState<string>("");
   const [sortOrder, setSortOrder] = useState<string>("");
   const [searchTerm, setSearchTerm] = useState<string>("");
-  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
-
   const [deleteDepartment] = useDeleteDepartmentMutation();
-
-  const query: Record<string, any> = {};
 
   query["limit"] = size;
   query["page"] = page;
@@ -39,32 +36,26 @@ const ManageDepartmentPage = () => {
 
   const debouncedTerm = useDebounced({
     searchQuery: searchTerm,
-    delay: 1000,
+    delay: 600,
   });
 
   if (!!debouncedTerm) {
-    query["searchTerm"] = searchTerm;
+    query["searchTerm"] = debouncedTerm;
   }
-
   const { data, isLoading } = useDepartmentsQuery({ ...query });
 
   const departments = data?.departments;
   const meta = data?.meta;
 
-  const handleModalOpen = () => {
-    setIsModalOpen(true);
-  };
-
   const deleteHandler = async (id: string) => {
-    message.loading("Deleting...");
+    message.loading("Deleting.....");
     try {
+      //   console.log(data);
       await deleteDepartment(id);
-      message.success("Department Deleted");
-      setIsModalOpen(false);
+      message.success("Department Deleted successfully");
     } catch (err: any) {
-      console.error(err.message);
+      //   console.error(err.message);
       message.error(err.message);
-      setIsModalOpen(false);
     }
   };
 
@@ -76,45 +67,45 @@ const ManageDepartmentPage = () => {
     {
       title: "CreatedAt",
       dataIndex: "createdAt",
+      render: function (data: any) {
+        return data && dayjs(data).format("MMM D, YYYY hh:mm A");
+      },
       sorter: true,
-      render: (data: any) => data && dayjs(data).format("MMM D, YYYY h:mm A"),
-    },
-    {
-      title: "Address",
-      dataIndex: "address",
-      key: "address",
     },
     {
       title: "Action",
-      render: (data: any) => (
-        <>
-          <Link href={`/super_admin/department/edit/${data?.id}`}>
-            <Button style={{ marginRight: "5px" }} type="primary">
-              <EditOutlined />
+      render: function (data: any) {
+        return (
+          <>
+            <Link href={`/super_admin/department/edit/${data?.id}`}>
+              <Button
+                style={{
+                  margin: "0px 5px",
+                }}
+                onClick={() => console.log(data)}
+                type="primary"
+              >
+                <EditOutlined />
+              </Button>
+            </Link>
+            <Button
+              onClick={() => deleteHandler(data?.id)}
+              type="primary"
+              danger
+            >
+              <DeleteOutlined />
             </Button>
-          </Link>
-          <Button onClick={handleModalOpen} type="primary" danger>
-            <DeleteOutlined />
-          </Button>
-          <UMModal
-            isModalOpen={isModalOpen}
-            setIsModalOpen={setIsModalOpen}
-            title={`Are you sure want to delete
-              ${data?.title}
-             department ?`}
-            handleOk={() => deleteHandler(data?.id)}
-          />
-        </>
-      ),
+          </>
+        );
+      },
     },
   ];
 
   const onPaginationChange = (page: number, pageSize: number) => {
-    // console.log({ page, pageSize });
+    console.log("Page:", page, "PageSize:", pageSize);
     setPage(page);
     setSize(pageSize);
   };
-
   const onTableChange = (pagination: any, filter: any, sorter: any) => {
     const { order, field } = sorter;
     // console.log(order, field);
@@ -127,6 +118,7 @@ const ManageDepartmentPage = () => {
     setSortOrder("");
     setSearchTerm("");
   };
+
   return (
     <div>
       <UMBreadCrumb
@@ -140,12 +132,15 @@ const ManageDepartmentPage = () => {
 
       <ActionBar title="Department List">
         <Input
-          style={{ width: "25%" }}
-          value={searchTerm}
-          size="large"
           type="text"
+          size="large"
           placeholder="Search..."
-          onChange={(e) => setSearchTerm(e.target.value)}
+          style={{
+            width: "20%",
+          }}
+          onChange={(e) => {
+            setSearchTerm(e.target.value);
+          }}
         />
         <div>
           <Link href="/super_admin/department/create">
@@ -154,8 +149,8 @@ const ManageDepartmentPage = () => {
           {(!!sortBy || !!sortOrder || !!searchTerm) && (
             <Button
               onClick={resetFilters}
-              style={{ margin: "0 5px" }}
               type="primary"
+              style={{ margin: "0px 5px" }}
             >
               <ReloadOutlined />
             </Button>

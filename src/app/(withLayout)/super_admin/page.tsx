@@ -1,6 +1,6 @@
 import UMBreadCrumb from "@/components/ui/UMBreadCrumb";
 
-const SuperAdmin = () => {
+const SuperAdminPage = () => {
   return (
     <div>
       <UMBreadCrumb
@@ -11,9 +11,9 @@ const SuperAdmin = () => {
           },
         ]}
       />
-      <h1>SuperAdmin</h1>
+      <h1>This page is for super admin</h1>
     </div>
   );
 };
 
-export default SuperAdmin;
+export default SuperAdminPage;

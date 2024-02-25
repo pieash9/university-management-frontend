@@ -8,9 +8,11 @@ import { Button, Col, Row, message } from "antd";
 
 const CreateDepartmentPage = () => {
   const [addDepartment] = useAddDepartmentMutation();
+
   const onSubmit = async (data: any) => {
-    message.loading("Creating...");
+    message.loading("Creating.....");
     try {
+      console.log(data);
       await addDepartment(data);
       message.success("Department added successfully");
     } catch (err: any) {
@@ -23,7 +25,7 @@ const CreateDepartmentPage = () => {
     <div>
       <UMBreadCrumb
         items={[
-          { label: base, link: `/${base}` },
+          { label: `${base}`, link: `/${base}` },
           { label: "department", link: `/${base}/department` },
         ]}
       />

@@ -1,10 +1,9 @@
 import { DatePicker, DatePickerProps, Input } from "antd";
-
-import dayjs, { Dayjs } from "dayjs";
 import { Controller, useFormContext } from "react-hook-form";
+import dayjs, { Dayjs } from "dayjs";
 
 type UMDatePikerProps = {
-  onChange?: (valOne: Dayjs | null, valTwo: string | string[]) => void;
+  onChange?: (valOne: Dayjs | null, valTwo: string) => void;
   name: string;
   label?: string;
   value?: Dayjs;
@@ -21,18 +20,19 @@ const FormDatePicker = ({
 
   const handleOnChange: DatePickerProps["onChange"] = (date, dateString) => {
     onChange ? onChange(date, dateString) : null;
-    setValue(name, dateString);
+    setValue(name, date);
   };
 
   return (
     <div>
-      {label ? <p style={{ marginBottom: "4px" }}>{label}</p> : null}
+      {label ? label : null}
+      <br />
       <Controller
         name={name}
         control={control}
         render={({ field }) => (
           <DatePicker
-            defaultValue={dayjs(field.value) || ""}
+            defaultValue={dayjs(field.value) || Date.now()}
             size={size}
             onChange={handleOnChange}
             style={{ width: "100%" }}

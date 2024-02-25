@@ -21,16 +21,6 @@ export const departmentApi = baseApi.injectEndpoints({
       providesTags: [tagTypes.department],
     }),
 
-    // get single department
-    department: build.query({
-      query: (id: string) => ({
-        url: `${DEPARTMENT_URL}/${id}`,
-        method: "GET",
-      }),
-      providesTags: [tagTypes.department],
-    }),
-
-    // add single Department
     addDepartment: build.mutation({
       query: (data) => ({
         url: DEPARTMENT_URL,
@@ -40,9 +30,18 @@ export const departmentApi = baseApi.injectEndpoints({
       invalidatesTags: [tagTypes.department],
     }),
 
-    // update single Department
+    // get single department by id
+    department: build.query({
+      query: (id) => ({
+        url: `${DEPARTMENT_URL}/${id}`,
+        method: "GET",
+      }),
+      providesTags: [tagTypes.department],
+    }),
+
+    // update single department by id
     updateDepartment: build.mutation({
-      query: (data: any) => ({
+      query: (data) => ({
         url: `${DEPARTMENT_URL}/${data.id}`,
         method: "PATCH",
         data: data.body,
@@ -50,9 +49,9 @@ export const departmentApi = baseApi.injectEndpoints({
       invalidatesTags: [tagTypes.department],
     }),
 
-    // delete single department
+    // delete single department by id
     deleteDepartment: build.mutation({
-      query: (id: string) => ({
+      query: (id) => ({
         url: `${DEPARTMENT_URL}/${id}`,
         method: "DELETE",
       }),
@@ -63,8 +62,8 @@ export const departmentApi = baseApi.injectEndpoints({
 
 export const {
   useDepartmentsQuery,
-  useDepartmentQuery,
   useAddDepartmentMutation,
-  useUpdateDepartmentMutation,
-  useDeleteDepartmentMutation,
+  useDepartmentQuery, // get single department hooks
+  useUpdateDepartmentMutation, // update single department hooks
+  useDeleteDepartmentMutation, // delete single department hooks
 } = departmentApi;

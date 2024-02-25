@@ -10,7 +10,7 @@ const UMBreadCrumb = ({
     link: string;
   }[];
 }) => {
-  const breadcrumbItems = [
+  const breadCrumbItems = [
     {
       title: (
         <Link href="/">
@@ -28,7 +28,8 @@ const UMBreadCrumb = ({
       };
     }),
   ];
-  return <Breadcrumb items={breadcrumbItems} />;
+
+  return <Breadcrumb items={breadCrumbItems}></Breadcrumb>;
 };
 
 export default UMBreadCrumb;

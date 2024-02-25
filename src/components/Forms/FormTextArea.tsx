@@ -1,5 +1,3 @@
-"use client";
-
 import { Input } from "antd";
 import { Controller, useFormContext } from "react-hook-form";
 
@@ -13,24 +11,24 @@ type TextAreaProps = {
 
 const FormTextArea = ({
   name,
-  value,
-  placeholder,
   label,
   rows,
+  value,
+  placeholder,
 }: TextAreaProps) => {
   const { control } = useFormContext();
   return (
     <div className={`flex flex-col  w-full`}>
-      {label ? <p style={{ marginBottom: "4px" }}>{label}</p> : null}
+      {label ? label : null}
       <Controller
-        control={control}
         name={name}
+        control={control}
         render={({ field }) => (
           <Input.TextArea
-            {...field}
             rows={rows}
-            defaultValue={value ? value : field.value}
             placeholder={placeholder}
+            {...field}
+            defaultValue={value}
           />
         )}
       />

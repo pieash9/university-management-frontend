@@ -1,17 +1,15 @@
 "use client";
-
 import Contents from "@/components/ui/Contents";
-import LoadingFullScreen from "@/components/ui/Loading";
-import SideBar from "@/components/ui/SideBar";
+import SideBar from "@/components/ui/Sidebar";
 import { isLoggedIn } from "@/services/auth.service";
-import { Layout } from "antd";
+import { Layout, Row, Space, Spin } from "antd";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
 const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
-  const [isLoading, setIsLoading] = useState<boolean>(false);
   const userLoggedIn = isLoggedIn();
   const router = useRouter();
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   useEffect(() => {
     if (!userLoggedIn) {
@@ -21,8 +19,21 @@ const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
   }, [router, isLoading]);
 
   if (!isLoading) {
-    return <LoadingFullScreen />;
+    return (
+      <Row
+        justify="center"
+        align="middle"
+        style={{
+          height: "100vh",
+        }}
+      >
+        <Space>
+          <Spin tip="Loading" size="large"></Spin>
+        </Space>
+      </Row>
+    );
   }
+
   return (
     <Layout hasSider>
       <SideBar />

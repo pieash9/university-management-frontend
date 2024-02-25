@@ -1,19 +1,18 @@
-import React, { useState } from "react";
 import { LoadingOutlined, PlusOutlined } from "@ant-design/icons";
 import { message, Upload } from "antd";
-import type { GetProp, UploadProps } from "antd";
+import type { UploadChangeParam } from "antd/es/upload";
+import type { RcFile, UploadFile, UploadProps } from "antd/es/upload/interface";
 import Image from "next/image";
+import { useState } from "react";
 import { useFormContext } from "react-hook-form";
 
-type FileType = Parameters<GetProp<UploadProps, "beforeUpload">>[0];
-
-const getBase64 = (img: FileType, callback: (url: string) => void) => {
+const getBase64 = (img: RcFile, callback: (url: string) => void) => {
   const reader = new FileReader();
   reader.addEventListener("load", () => callback(reader.result as string));
   reader.readAsDataURL(img);
 };
 
-const beforeUpload = (file: FileType) => {
+const beforeUpload = (file: RcFile) => {
   const isJpgOrPng = file.type === "image/jpeg" || file.type === "image/png";
   if (!isJpgOrPng) {
     message.error("You can only upload JPG/PNG file!");
@@ -34,7 +33,9 @@ const UploadImage = ({ name }: ImageUploadProps) => {
   const [imageUrl, setImageUrl] = useState<string>();
   const { setValue } = useFormContext();
 
-  const handleChange: UploadProps["onChange"] = (info) => {
+  const handleChange: UploadProps["onChange"] = (
+    info: UploadChangeParam<UploadFile>
+  ) => {
     if (info.file.status === "uploading") {
       setLoading(true);
       return;
@@ -42,7 +43,7 @@ const UploadImage = ({ name }: ImageUploadProps) => {
     if (info.file.status === "done") {
       // Get this url from response in real world.
       setValue(name, info.file.originFileObj);
-      getBase64(info.file.originFileObj as FileType, (url) => {
+      getBase64(info.file.originFileObj as RcFile, (url) => {
         setLoading(false);
         setImageUrl(url);
       });
@@ -50,10 +51,10 @@ const UploadImage = ({ name }: ImageUploadProps) => {
   };
 
   const uploadButton = (
-    <button style={{ border: 0, background: "none" }} type="button">
+    <div>
       {loading ? <LoadingOutlined /> : <PlusOutlined />}
       <div style={{ marginTop: 8 }}>Upload</div>
-    </button>
+    </div>
   );
 
   return (
@@ -70,7 +71,7 @@ const UploadImage = ({ name }: ImageUploadProps) => {
         {imageUrl ? (
           <Image
             src={imageUrl}
-            alt={name}
+            alt="avatar"
             style={{ width: "100%" }}
             width={100}
             height={100}

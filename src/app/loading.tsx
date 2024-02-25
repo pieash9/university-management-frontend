@@ -1,7 +1,19 @@
-import LoadingFullScreen from "@/components/ui/Loading";
+import { Row, Space, Spin } from "antd";
 
-const loading = () => {
-  return <LoadingFullScreen />;
+const Loading = () => {
+  return (
+    <Row
+      justify="center"
+      align="middle"
+      style={{
+        height: "100vh",
+      }}
+    >
+      <Space>
+        <Spin tip="Loading" size="large"></Spin>
+      </Space>
+    </Row>
+  );
 };
 
-export default loading;
+export default Loading;

@@ -1,5 +1,9 @@
 const AdminPage = () => {
-  return <div>AdminPage</div>;
+  return (
+    <div>
+      <h1>Welcome To Admin Profile</h1>
+    </div>
+  );
 };
 
 export default AdminPage;

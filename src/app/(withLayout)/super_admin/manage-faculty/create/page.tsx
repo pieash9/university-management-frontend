@@ -1,5 +1,7 @@
 "use client";
 
+import ACDepartmentField from "@/components/Forms/ACDepartmentField";
+import ACFacultyField from "@/components/Forms/ACFacultyField";
 import Form from "@/components/Forms/Form";
 import FormDatePicker from "@/components/Forms/FormDatePicker";
 import FormInput from "@/components/Forms/FormInput";
@@ -8,27 +10,26 @@ import FormTextArea from "@/components/Forms/FormTextArea";
 import UMBreadCrumb from "@/components/ui/UMBreadCrumb";
 import UploadImage from "@/components/ui/UploadImage";
 import { bloodGroupOptions, genderOptions } from "@/constants/global";
-import { Button, Col, Row } from "antd";
+import { useAddFacultyWithFormDataMutation } from "@/redux/api/facultyApi";
+import { Button, Col, Row, message } from "antd";
 
 const CreateFacultyPage = () => {
-  const departmentOptions = [
-    {
-      label: "HR",
-      value: "hr",
-    },
-    {
-      label: "Finance",
-      value: "finance",
-    },
-    {
-      label: "Management",
-      value: "Management",
-    },
-  ];
+  const [addFacultyWithFormData] = useAddFacultyWithFormDataMutation();
 
-  const adminOnSubmit = async (data: any) => {
+  const adminOnSubmit = async (values: any) => {
+    const obj = { ...values };
+    const file = obj["file"];
+    delete obj["file"];
+    const data = JSON.stringify(obj);
+    const formData = new FormData();
+    formData.append("file", file as Blob);
+    formData.append("data", data);
+    message.loading("Creating...");
     try {
-      console.log(data);
+      const res = await addFacultyWithFormData(formData);
+      if (!!res) {
+        message.success("Faculty created successfully!");
+      }
     } catch (err: any) {
       console.error(err.message);
     }
@@ -39,11 +40,11 @@ const CreateFacultyPage = () => {
     <>
       <UMBreadCrumb
         items={[
-          { label: base, link: `/${base}` },
+          { label: `${base}`, link: `/${base}` },
           { label: "manage-faculty", link: `/${base}/manage-faculty` },
         ]}
       />
-      <h1 style={{ marginBottom: "10px" }}>Create Faculty</h1>
+      <h1>Create Faculty</h1>
       <Form submitHandler={adminOnSubmit}>
         {/* faculty information */}
         <div
@@ -96,29 +97,24 @@ const CreateFacultyPage = () => {
                 name="faculty.gender"
                 label="Gender"
                 options={genderOptions}
-                size="large"
               />
             </Col>
 
             <Col span={8} style={{ margin: "10px 0" }}>
-              <FormSelectField
+              <ACFacultyField
                 name="faculty.academicFaculty"
                 label="Academic Faculty"
-                options={departmentOptions}
-                size="large"
               />
             </Col>
             <Col span={8} style={{ margin: "10px 0" }}>
-              <FormSelectField
+              <ACDepartmentField
                 name="faculty.academicDepartment"
                 label="Academic Department"
-                options={departmentOptions}
-                size="large"
               />
             </Col>
 
             <Col span={8} style={{ margin: "10px 0" }}>
-              <UploadImage />
+              <UploadImage name="file" />
             </Col>
           </Row>
         </div>
@@ -164,7 +160,6 @@ const CreateFacultyPage = () => {
               <FormDatePicker
                 name="faculty.dateOfBirth"
                 label="Date of birth"
-                size="large"
               />
             </Col>
 
@@ -173,7 +168,6 @@ const CreateFacultyPage = () => {
                 name="faculty.bloodGroup"
                 label="Blood group"
                 options={bloodGroupOptions}
-                size="large"
               />
             </Col>
 
@@ -202,9 +196,7 @@ const CreateFacultyPage = () => {
             </Col>
           </Row>
         </div>
-        <Button type="primary" htmlType="submit">
-          submit
-        </Button>
+        <Button htmlType="submit">submit</Button>
       </Form>
     </>
   );
